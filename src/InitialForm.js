@@ -4,7 +4,7 @@ import './InitialForm.css';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
-import Parser from 'html-react-parser';
+import PatientDetail from "./PatientDetail";
 
 class InitialForm extends Component {
     constructor(props) {
@@ -21,7 +21,7 @@ class InitialForm extends Component {
         rowData: [
         ],
         showPatients: false,
-        showPatientDetailsId: -1
+        selectedPatientId: -1
       };
     }
 
@@ -68,22 +68,7 @@ class InitialForm extends Component {
     }
 
     handlePatientRowClick(rowIndex) {
-      console.log("row clicked", this.state.rowData[rowIndex].id);
-      fetch(this.state.name + '/Patient/' + this.state.rowData[rowIndex].id + '/' + '?_format=json&id=' )
-        .then(async response => {
-            const data = await response.json();
-            // check for error response
-            if (!response.ok) {
-                // get error message from body or default to response statusText
-                const error = (data && data.message) || response.statusText;
-                return Promise.reject(error);
-            }
-            this.setState({ showPatientDetailsId: data.text.div });
-        })
-        .catch(error => {
-          this.setState({ errorMessage: error.toString() });
-          console.error('There was an error!', error);
-      });
+      this.setState({selectedPatientId: this.state.rowData[rowIndex].id})
     }
 
     render() {
@@ -104,8 +89,7 @@ class InitialForm extends Component {
               onRowClicked={(e) => this.handlePatientRowClick(e.rowIndex) }>
             </AgGridReact>
           </div> : null }
-          { this.state.showPatientDetailsId !== -1 ? <div class="details">{Parser(this.state.showPatientDetailsId)}
-          </div> : null }
+          { this.state.selectedPatientId !== -1 ?  <PatientDetail url={this.state.name} patientId={this.state.selectedPatientId}/>: null }
         </div>
       );
     }
