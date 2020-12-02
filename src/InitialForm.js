@@ -5,6 +5,7 @@ import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 import PatientDetail from "./PatientDetail";
+import Observation from "./Observation";
 
 class InitialForm extends Component {
     constructor(props) {
@@ -81,8 +82,8 @@ class InitialForm extends Component {
           </div>
           { this.state.showPatients ? <div className="ag-theme-balham"
             style={{
-              height: '500px',
-              width: '100%'
+              height: '200px',
+              width: '800px'
             }}><AgGridReact
               columnDefs={this.state.columnDefs}
               rowData={this.state.rowData}
@@ -90,6 +91,7 @@ class InitialForm extends Component {
             </AgGridReact>
           </div> : null }
           { this.state.selectedPatientId !== -1 ?  <PatientDetail url={this.state.name} patientId={this.state.selectedPatientId}/>: null }
+          { this.state.selectedPatientId !== -1 ?  <Observation url={this.state.name} patientId={this.state.selectedPatientId}/>: null }
         </div>
       );
     }

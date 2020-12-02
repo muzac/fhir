@@ -1,0 +1,17 @@
+.Observations {
+    background-color: grey;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 5px;
+    width: 800px;
+    font-size: 14px;
+    color: black;
+}
+
+.ObservationEntry {
+    background-color: lightgray;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 5px;
+    font-size: 14px;
+}
