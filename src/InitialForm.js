@@ -36,6 +36,7 @@ class InitialForm extends Component {
     // http://test.fhir.org/r3/Patient/10/?_format=json
     // https://vonk.fire.ly
     // http://test.fhir.org/r3
+    // https://stu3.test.pyrohealth.net/fhir (only patient list)
     handleClick() {
       fetch(this.state.name + '/Patient?_format=json')
         .then(async response => {

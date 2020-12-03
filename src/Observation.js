@@ -10,30 +10,33 @@ class Observation extends Component {
       };
     }
 
+    async processData(response) {
+      const data = await response.json();
+      if (!response.ok) {
+          // get error message from body or default to response statusText
+          const error = (data && data.message) || response.statusText;
+          return Promise.reject(error);
+      }
+      if (data.total > 0) {
+        let txt = ""
+        for (let i =0; i <data.total; i++) {
+          txt += "<div class=\"ObservationEntry\">";
+          txt += data.entry[i].resource.text.div;
+          txt += "</div>"
+        }
+        this.setState({ patientDetails:  txt});
+      } else {
+        this.setState({ patientDetails: "Empty" });
+      }
+    }
+
     componentDidUpdate(prevProps) {
       // Typical usage (don't forget to compare props):
       if (this.props.patientId !== prevProps.patientId) {
         //http://test.fhir.org/r3/Observation?patient._id=138&_format=json
-        fetch(this.props.url + '/Observation?patient._id=' + this.props.patientId + '&_format=json&id=' )
+        fetch(this.props.url + '/Observation?patient._id=' + this.props.patientId + '&_format=json' )
           .then(async response => {
-              const data = await response.json();
-              // check for error response
-              if (!response.ok) {
-                  // get error message from body or default to response statusText
-                  const error = (data && data.message) || response.statusText;
-                  return Promise.reject(error);
-              }
-              if (data.total > 0) {
-                let txt = ""
-                for (let i =0; i <data.total; i++) {
-                  txt += "<div class=\"ObservationEntry\">";
-                  txt += data.entry[i].resource.text.div;
-                  txt += "</div>"
-                }
-                this.setState({ patientDetails:  txt});
-              } else {
-                this.setState({ patientDetails: "Empty" });
-              }
+              this.processData(response)
           })
           .catch(error => {
             this.setState({ errorMessage: error.toString() });
