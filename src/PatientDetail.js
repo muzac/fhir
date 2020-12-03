@@ -13,7 +13,7 @@ class PatientDetail extends Component {
     componentDidUpdate(prevProps) {
       // Typical usage (don't forget to compare props):
       if (this.props.patientId !== prevProps.patientId) {
-        fetch(this.props.url + '/Patient/' + this.props.patientId + '/' + '?_format=json' )
+        fetch(this.props.url + '/Patient/' + this.props.patientId + '?_format=json' )
           .then(async response => {
               const data = await response.json();
               // check for error response

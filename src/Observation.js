@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Parser from 'html-react-parser';
+import _ from 'lodash';
 import './Observation.css';
 
 class Observation extends Component {
@@ -21,7 +22,12 @@ class Observation extends Component {
         let txt = ""
         for (let i =0; i <data.total; i++) {
           txt += "<div class=\"ObservationEntry\">";
-          txt += data.entry[i].resource.text.div;
+          txt += _.get(data.entry[i], 'resource.text.div', '');
+          txt += _.get(data.entry[i], 'resource.effectiveDateTime', '') + "<br/>";
+          txt += _.get(data.entry[i], 'resource.code.text', '') + " : ";
+          txt += _.get(data.entry[i], 'resource.valueQuantity.value', '') + " ";
+          txt += _.get(data.entry[i], 'resource.valueQuantity.unit', '') + "<br/>";
+
           txt += "</div>"
         }
         this.setState({ patientDetails:  txt});
@@ -29,7 +35,7 @@ class Observation extends Component {
         this.setState({ patientDetails: "Empty" });
       }
     }
-
+    //http://ima_imaging_one:8080/fhir/Observation?patient._id=ce648e7a-d100-3cba-6557-3c5a744e13dd&_format=json
     componentDidUpdate(prevProps) {
       // Typical usage (don't forget to compare props):
       if (this.props.patientId !== prevProps.patientId) {
